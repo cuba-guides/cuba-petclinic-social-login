@@ -6,6 +6,7 @@ import com.haulmont.cuba.gui.screen.OpenMode;
 import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
 import com.haulmont.cuba.gui.screen.UiDescriptor;
+import com.haulmont.cuba.web.Connection;
 import com.haulmont.cuba.web.app.main.MainScreen;
 
 import javax.inject.Inject;
@@ -16,11 +17,12 @@ public class ExtMainScreen extends MainScreen {
 
     @Inject
     private Screens screens;
+    @Inject
+    private Connection connection;
 
     @Subscribe
     private void onInit(InitEvent event) {
-        UserActionsButton userActionsButton = (UserActionsButton) getWindow()
-                .getComponent("userActionsButton");
+        UserActionsButton userActionsButton = getUserActionsButton();
         if (userActionsButton != null) {
             userActionsButton.setLoginHandler(ctx ->
                     showLoginDialog());
@@ -29,7 +31,9 @@ public class ExtMainScreen extends MainScreen {
 
     @Subscribe
     private void onAfterShowExt(AfterShowEvent event) {
-        showLoginDialog();
+        if (!connection.isAuthenticated()) {
+            showLoginDialog();
+        }
     }
 
     private void showLoginDialog() {

@@ -63,6 +63,20 @@
                         action="submit"
                         stylename="c-login-submit-button"/>
             </vbox>
+            <hbox align="TOP_CENTER"
+                  margin="true;false;false;false"
+                  spacing="true"
+                  width="AUTO">
+                <linkButton id="googleLogin"
+                            icon="GOOGLE"
+                            stylename="social-button"/>
+                <linkButton id="facebookLogin"
+                            icon="FACEBOOK"
+                            stylename="social-button"/>
+                <linkButton id="githubLogin"
+                            icon="GITHUB"
+                            stylename="social-button"/>
+            </hbox>
         </vbox>
     </layout>
 </window>
