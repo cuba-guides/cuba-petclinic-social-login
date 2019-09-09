@@ -2,6 +2,7 @@ package com.haulmont.sample.petclinic.web;
 
 import com.haulmont.cuba.gui.Screens;
 import com.haulmont.cuba.gui.components.mainwindow.UserActionsButton;
+import com.haulmont.cuba.gui.screen.Install;
 import com.haulmont.cuba.gui.screen.OpenMode;
 import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
@@ -20,13 +21,9 @@ public class ExtMainScreen extends MainScreen {
     @Inject
     private Connection connection;
 
-    @Subscribe
-    private void onInit(InitEvent event) {
-        UserActionsButton userActionsButton = getUserActionsButton();
-        if (userActionsButton != null) {
-            userActionsButton.setLoginHandler(ctx ->
-                    showLoginDialog());
-        }
+    @Install(to = "userActionsButton", subject = "loginHandler")
+    private void loginHandler(UserActionsButton.LoginHandlerContext ctx) {
+        showLoginDialog();
     }
 
     @Subscribe
