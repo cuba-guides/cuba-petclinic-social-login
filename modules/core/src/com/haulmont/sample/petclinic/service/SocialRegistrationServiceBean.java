@@ -1,10 +1,8 @@
 package com.haulmont.sample.petclinic.service;
 
-import com.haulmont.cuba.core.EntityManager;
-import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.TypedQuery;
 import com.haulmont.cuba.core.global.Configuration;
-import com.haulmont.cuba.core.global.Metadata;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.LoadContext;
 import com.haulmont.cuba.core.global.View;
 import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
@@ -12,8 +10,8 @@ import com.haulmont.sample.petclinic.auth.SocialService;
 import com.haulmont.sample.petclinic.core.config.SocialRegistrationConfig;
 import com.haulmont.sample.petclinic.entity.SocialUser;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.regex.Pattern;
 
@@ -23,33 +21,45 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("[^@]+@[^.]+\\..+");
 
     @Inject
-    private Metadata metadata;
-    @Inject
-    private Persistence persistence;
+    private DataManager dataManager;
     @Inject
     private Configuration configuration;
 
     @Override
-    @Transactional
-    public User findOrRegisterUser(String socialServiceId, String login, String name, SocialService socialService) {
-        // Find existing user
-        TypedQuery<SocialUser> query = getUserQuery(socialService, socialServiceId);
-
-        SocialUser existingUser = query.getFirstResult();
+    public User findOrRegisterUser(String socialServiceId, String login, String name,
+                                   SocialService socialService) {
+        User existingUser = findExistingUser(socialService, socialServiceId);
         if (existingUser != null) {
             return existingUser;
         }
 
-        SocialRegistrationConfig config = configuration.getConfig(SocialRegistrationConfig.class);
+        SocialUser user = createNewUser(socialServiceId, login, name, socialService);
 
-        EntityManager em = persistence.getEntityManager();
-        Group defaultGroup = em.find(Group.class, config.getDefaultGroupId(), View.MINIMAL);
+        dataManager.commit(user);
 
-        // Register new user
-        SocialUser user = metadata.create(SocialUser.class);
+        return user;
+    }
+
+    @Nullable
+    private User findExistingUser(SocialService socialService, String socialServiceId) {
+        String socialServiceField = getSocialIdParamName(socialService);
+
+        LoadContext<User> ctx = new LoadContext<>(User.class);
+        ctx.setView(View.LOCAL);
+        ctx.setQueryString("select u from sec$User u where " +
+                String.format("u.%s = :socialServiceId", socialServiceField))
+                .setParameter("socialServiceId", socialServiceId);
+
+        return dataManager.load(ctx);
+    }
+
+    private SocialUser createNewUser(String socialServiceId, String login,
+                                     String name, SocialService socialService) {
+        SocialUser user = dataManager.create(SocialUser.class);
+
         user.setLogin(login);
         user.setName(name);
-        user.setGroup(defaultGroup);
+        user.setGroup(getDefaultGroup());
         user.setActive(true);
 
         if (isEmail(login)) {
@@ -67,24 +77,18 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
                 user.setGithubId(socialServiceId);
                 break;
         }
-
-        em.persist(user);
-
         return user;
     }
 
-    private TypedQuery<SocialUser> getUserQuery(SocialService socialService, String socialServiceId) {
-        EntityManager em = persistence.getEntityManager();
+    private Group getDefaultGroup() {
+        SocialRegistrationConfig config = configuration.getConfig(SocialRegistrationConfig.class);
 
-        String socialIdParam = getSocialIdParamName(socialService);
+        LoadContext<Group> ctx = new LoadContext<>(Group.class);
+        ctx.setQueryString("select g from sec$Group g where g.id = :defaultGroupId")
+                .setParameter("defaultGroupId", config.getDefaultGroupId());
+        ctx.setView(View.MINIMAL);
 
-        TypedQuery<SocialUser> query = em.createQuery("select u from sec$User u where " +
-                        String.format("u.%s = :%s", socialIdParam, socialIdParam),
-                SocialUser.class);
-        query.setParameter(socialIdParam, socialServiceId);
-        query.setViewName(View.LOCAL);
-
-        return query;
+        return dataManager.load(ctx);
     }
 
     private String getSocialIdParamName(SocialService socialService) {

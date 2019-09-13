@@ -173,3 +173,51 @@ INSERT INTO PETCLINIC_VISIT (ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDA
 INSERT INTO PETCLINIC_VISIT (ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, VISIT_DATE, DESCRIPTION, PET_ID) VALUES ('bb9f9b68-5b29-5f8b-9181-c05b776028a6', 1, '2018-11-07 07:52:06.579000', 'admin', '2018-11-07 07:52:06.579000', null, null, null, '2018-01-17', null, '8b249acd-4c73-c4e7-bb9f-288ff4624ac1');
 INSERT INTO PETCLINIC_VISIT (ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, VISIT_DATE, DESCRIPTION, PET_ID) VALUES ('bdaae2fa-794c-2fec-49e4-7be78bf1c26c', 1, '2018-11-07 07:52:59.090000', 'admin', '2018-11-07 07:52:59.090000', null, null, null, '2013-01-12', null, 'cbc8b9aa-a9ae-f284-be67-7988e6eb9d57');
 INSERT INTO PETCLINIC_VISIT (ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, VISIT_DATE, DESCRIPTION, PET_ID) VALUES ('d22b32fb-d0b5-128e-78e8-2e5ee6309903', 1, '2018-11-07 07:52:19.584000', 'admin', '2018-11-07 07:52:19.584000', null, null, null, '2012-07-04', null, '8b249acd-4c73-c4e7-bb9f-288ff4624ac1');
+
+----------------------------------------------------------------------------------------------------
+-- Anonymous role permissions
+----------------------------------------------------------------------------------------------------
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('b93b5f55-79af-d78a-47e9-15fdd69057ff', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_PetType.edit', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('4bbaa267-b058-babf-988a-6e0c2022f52e', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_Vet.edit', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('ef755d44-46e4-bdb5-aecc-4eb52d99b1e0', 1, '2019-09-13 11:12:23', 'admin', '2019-09-13 11:12:23', null, null, null, 20, 'petclinic_Vet:read', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('65ef0c74-ee07-09ae-3751-16e6bffcabdf', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_Specialty.browse', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('ceb6fc4b-1591-c6e8-0ed5-fbc26b4ab8ee', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_PetType.browse', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('377fa6a6-31c6-10e3-e4ad-07e152a4a45c', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'application-masterdata', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('8d621f42-4ed5-21f6-8ae9-8a3fff61dbfc', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_Specialty.edit', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('9d3f38e4-9b6d-8bdb-f643-878927a1e6ff', 1, '2019-09-13 11:12:23', 'admin', '2019-09-13 11:12:23', null, null, null, 20, 'petclinic_Specialty:read', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('f021ee91-8ecd-ec18-0bd6-65b63bb64999', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'petclinic_Vet.browse', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('f7485762-4aff-ab6a-ba7a-687ab7da467f', 1, '2019-09-13 11:12:23', 'admin', '2019-09-13 11:12:23', null, null, null, 20, 'petclinic_PetType:read', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
+
+insert into SEC_PERMISSION
+(ID, VERSION, CREATE_TS, CREATED_BY, UPDATE_TS, UPDATED_BY, DELETE_TS, DELETED_BY, PERMISSION_TYPE, TARGET, VALUE_, ROLE_ID)
+values ('9a71cb11-ccfe-abed-2efd-3fd7545fb4fb', 1, '2019-09-13 11:12:01', 'admin', '2019-09-13 11:12:01', null, null, null, 10, 'application-petclinic', 1, 'cd541dd4-eeb7-cd5b-847e-d32236552fa9');
