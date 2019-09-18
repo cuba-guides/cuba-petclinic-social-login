@@ -16,7 +16,7 @@ You can find the CUBA Petclinic as an online hosted example here: [CUBA Petclini
 
 ## Application overview
 
-<a href="https://raw.githubusercontent.com/cuba-platform/cuba-petclinic/master/img/cuba-petclinic-overview.gif"><img src="https://raw.githubusercontent.com/cuba-platform/cuba-petclinic/master/img/login-screen.png"/></a>
+<a href="https://raw.githubusercontent.com/cuba-guides/cuba-petclinic-social-login/master/img/cuba-petclinic-overview.gif"><img src="https://raw.githubusercontent.com/cuba-guides/cuba-petclinic-social-login/master/img/login-dialog.png"/></a>
 
 
 ## Domain model
