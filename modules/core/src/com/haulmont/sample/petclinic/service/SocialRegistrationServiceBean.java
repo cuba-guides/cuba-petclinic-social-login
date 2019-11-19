@@ -35,9 +35,7 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
 
         SocialUser user = createNewUser(socialServiceId, login, name, socialService);
 
-        dataManager.commit(user);
-
-        return user;
+        return dataManager.commit(user);
     }
 
     @Nullable
@@ -77,6 +75,7 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
                 user.setGithubId(socialServiceId);
                 break;
         }
+
         return user;
     }
 
