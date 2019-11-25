@@ -2,8 +2,6 @@ package com.haulmont.sample.petclinic.service;
 
 import com.haulmont.cuba.core.global.Configuration;
 import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.LoadContext;
-import com.haulmont.cuba.core.global.View;
 import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.sample.petclinic.auth.SocialService;
@@ -80,12 +78,10 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
     private Group getDefaultGroup() {
         SocialRegistrationConfig config = configuration.getConfig(SocialRegistrationConfig.class);
 
-        LoadContext<Group> ctx = new LoadContext<>(Group.class);
-        ctx.setQueryString("select g from sec$Group g where g.id = :defaultGroupId")
-                .setParameter("defaultGroupId", config.getDefaultGroupId());
-        ctx.setView(View.MINIMAL);
-
-        return dataManager.load(ctx);
+        return dataManager.load(Group.class)
+                .query("select g from sec$Group g where g.id = :defaultGroupId")
+                .parameter("defaultGroupId", config.getDefaultGroupId())
+                .one();
     }
 
     private String getSocialIdParamName(SocialService socialService) {
