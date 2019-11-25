@@ -42,13 +42,11 @@ public class SocialRegistrationServiceBean implements SocialRegistrationService 
     private User findExistingUser(SocialService socialService, String socialServiceId) {
         String socialServiceField = getSocialIdParamName(socialService);
 
-        LoadContext<User> ctx = new LoadContext<>(User.class);
-        ctx.setView(View.LOCAL);
-        ctx.setQueryString("select u from sec$User u where " +
-                String.format("u.%s = :socialServiceId", socialServiceField))
-                .setParameter("socialServiceId", socialServiceId);
-
-        return dataManager.load(ctx);
+        return dataManager.load(User.class)
+                .query("select u from sec$User u where " +
+                        String.format("u.%s = :socialServiceId", socialServiceField))
+                .parameter("socialServiceId", socialServiceId)
+                .one();
     }
 
     private SocialUser createNewUser(String socialServiceId, String login,
