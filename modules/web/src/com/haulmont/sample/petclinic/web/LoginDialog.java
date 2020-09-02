@@ -1,6 +1,7 @@
 package com.haulmont.sample.petclinic.web;
 
 import com.haulmont.cuba.gui.Route;
+import com.haulmont.cuba.gui.components.Action.ActionPerformedEvent;
 import com.haulmont.cuba.gui.components.Button;
 import com.haulmont.cuba.gui.screen.DialogMode;
 import com.haulmont.cuba.gui.screen.Subscribe;
@@ -25,13 +26,16 @@ public class LoginDialog extends LoginScreen {
     @Inject
     private SocialLoginService socialLoginService;
 
-    public void performDefaultLogin() {
+
+    @Subscribe("submit")
+    protected void onLoginButtonClick(ActionPerformedEvent event) {
         login();
 
         if (connection.isAuthenticated()) {
             close(WINDOW_CLOSE_ACTION);
         }
     }
+
 
     @Subscribe("googleLogin")
     private void onGoogleLoginClick(Button.ClickEvent event) {
@@ -64,4 +68,5 @@ public class LoginDialog extends LoginScreen {
         return getBeanLocator()
                 .getPrototype(SocialServiceCallbackHandler.NAME, socialService);
     }
+
 }

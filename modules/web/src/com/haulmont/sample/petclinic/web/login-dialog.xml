@@ -4,7 +4,7 @@
         <action id="submit"
                 caption="mainMsg://loginWindow.okButton"
                 icon="app/images/login-button.png"
-                invoke="performDefaultLogin" shortcut="ENTER"/>
+                shortcut="ENTER"/>
     </actions>
 
     <layout>
